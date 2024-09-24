@@ -24,6 +24,7 @@ class MyApp extends StatelessWidget {
 
 class MyHomePage extends StatefulWidget {
   const MyHomePage({super.key, required this.title});
+
   final String title;
 
   @override
@@ -31,75 +32,301 @@ class MyHomePage extends StatefulWidget {
 }
 
 class _MyHomePageState extends State<MyHomePage> {
-  var isChecked = false;
-  late TextEditingController _login;
-  late TextEditingController _password;
-  var imageSource = "images/question-mark.png";
-
-  @override
-  void initState() {
-    super.initState();
-    _login = TextEditingController();
-    _password = TextEditingController();
-  }
-
-  @override
-  void dispose() {
-    _login.dispose();
-    _password.dispose();
-    super.dispose();
-  }
-
-  void checkPassword() {
-    String password = _password.value.text;
-    setState(() {
-      if(password == "QWERTY123") {
-        imageSource = "images/idea.png";
-      } else {
-        imageSource = "images/stop.png";
-      }
-    });
-  }
+  double _fontSize = 30.0;
+  double _contentFontSize = 18.0;
+  double _stackCaptionFontSize = 20.0;
+  double _categoricalFontSize = 26.0;
 
   @override
   Widget build(BuildContext context) {
     return Scaffold(
-      appBar: AppBar(
-        backgroundColor: Theme.of(context).colorScheme.inversePrimary,
-        title: Text(widget.title),
-        actions: [
-          OutlinedButton(onPressed: (){ }, child: const Text("Button 1")),
-          OutlinedButton(onPressed: (){ }, child: const Text("Button 1")),
-        ],
-      ),
-      drawer:const Drawer(child: Text("Hi there!")),
-      body: Center(
-        child: Column(
-          mainAxisAlignment: MainAxisAlignment.center,
-          children: <Widget>[
-            TextField(controller: _login,
-                decoration: const InputDecoration(hintText: "Login",
-                border: OutlineInputBorder()
-                ),
-            ),
-            TextField(controller: _password,
-              decoration: const InputDecoration(hintText: "Password",
-                  border: OutlineInputBorder(),
+        body: Center(
+          child: Padding(
+          padding: const EdgeInsets.all(30.0),
+            child: Column(
+              mainAxisAlignment: MainAxisAlignment.spaceBetween,
+              children: <Widget>[
+            // BROWSE CATEGORIES - ITEM #1
+              Container(
+                  child: Text(
+                "BROWSE CATEGORIES",
+                    style: TextStyle(
+                      fontSize: _fontSize,
+                      fontWeight: FontWeight.bold,
+                    ),
               ),
-              obscureText: true,
-            ),
-            ElevatedButton(onPressed: checkPassword, child: const Text("Login"),),
-            Image.asset(imageSource, width: 300, height: 300),
-          ],
-        ),
+              ),
+              // BIG TEXT - ITEM #2
+              Align(alignment: Alignment.centerLeft,
+                child: Container(child: Text("Not sure about exactly which recipe you're looking for? Do a search, or dive into our most popular categories.",
+                style: TextStyle(
+                  fontSize: _contentFontSize,
+                ),
+                ),
+                ),
+              ),
+              // BY MEAT - ITEM #3
+              Container(child: Text("BY MEAT",
+              style: TextStyle(
+                fontSize: _categoricalFontSize,
+                fontWeight: FontWeight.bold,
+                color: Colors.black,
+              ),
+              ),
+              ),
+              // ROW OF MEAT ITEMS - ITEM #4
+              Row(
+                mainAxisAlignment: MainAxisAlignment.spaceAround,
+                children: <Widget>[
+                  // BEEF
+                  Stack(
+                    alignment: Alignment.center,
+                    children: <Widget>[
+                      CircleAvatar(
+                          backgroundImage: AssetImage('images/beef.jpg'),
+                          radius: 80
+                      ),
+                      Text(
+                        "BEEF",
+                        style: TextStyle(
+                          fontSize: _fontSize,
+                          color: Colors.white,
+                          fontWeight: FontWeight.bold,
+                        ),
+                      ),
+                    ],
+                  ),
+                  // CHICKEN
+                  Stack(
+                    alignment: Alignment.center,
+                    children: <Widget>[
+                      CircleAvatar(
+                          backgroundImage: AssetImage('images/chicken.jpg'),
+                          radius: 80
+                      ),
+                      Text(
+                        "CHICKEN",
+                        style: TextStyle(
+                          fontSize: _fontSize,
+                          color: Colors.white,
+                          fontWeight: FontWeight.bold,
+                        ),
+                      ),
+                    ],
+                  ),
+                  // PORK
+                  Stack(
+                    alignment: Alignment.center,
+                    children: <Widget>[
+                      CircleAvatar(
+                          backgroundImage: AssetImage('images/pork.jpg'),
+                          radius: 80
+                      ),
+                      Text(
+                        "PORK",
+                        style: TextStyle(
+                          fontSize: _fontSize,
+                          color: Colors.white,
+                          fontWeight: FontWeight.bold,
+                        ),
+                      ),
+                    ],
+                  ),
+                  // SEAFOOD
+                  Stack(
+                    alignment: Alignment.center,
+                    children: <Widget>[
+                      CircleAvatar(
+                          backgroundImage: AssetImage('images/seafood.jpg'),
+                          radius: 80
+                      ),
+                      Text(
+                        "SEAFOOD",
+                        style: TextStyle(
+                          fontSize: _fontSize,
+                          color: Colors.white,
+                          fontWeight: FontWeight.bold,
+                        ),
+                      ),
+                    ],
+                  ),
+                ],
+              ),
+              // BY COURSE - ITEM #5
+              Container(child: Text("BY COURSE",
+              style: TextStyle(
+                color: Colors.black,
+                fontWeight: FontWeight.bold,
+                fontSize: _categoricalFontSize,
+              ),
+              ),
+              ),
+              // ROW OF COURSE ITEMS - ITEM #6
+              Row(
+                mainAxisAlignment: MainAxisAlignment.spaceAround,
+                children: <Widget>[
+                  // BEEF
+                  Stack(
+                    alignment: Alignment.bottomCenter,
+                    children: <Widget>[
+                      CircleAvatar(
+                          backgroundImage: AssetImage('images/main_dishes.jpg'),
+                          radius: 80
+                      ),
+                      Align(alignment: Alignment.bottomCenter,
+                      child: Text(
+                        "Main Dishes",
+                        style: TextStyle(
+                          fontSize: _stackCaptionFontSize,
+                          color: Colors.black,
+                          fontWeight: FontWeight.bold,
+                        ),
+                      ),
+                      ),
+                    ],
+                  ),
+                  // SALAD
+                  Stack(
+                    alignment: Alignment.bottomCenter,
+                    children: <Widget>[
+                      CircleAvatar(
+                          backgroundImage: AssetImage('images/salad.jpg'),
+                          radius: 80
+                      ),
+                      Text(
+                        "Salad Recipes",
+                        style: TextStyle(
+                          fontSize: _stackCaptionFontSize,
+                          color: Colors.black,
+                          fontWeight: FontWeight.bold,
+                        ),
+                      ),
+                    ],
+                  ),
+                  // SIDE DISHES
+                  Stack(
+                    alignment: Alignment.bottomCenter,
+                    children: <Widget>[
+                      CircleAvatar(
+                          backgroundImage: AssetImage('images/side_dishes.jpg'),
+                          radius: 80
+                      ),
+                      Text(
+                        "Side Dishes",
+                        style: TextStyle(
+                          fontSize: _stackCaptionFontSize,
+                          color: Colors.black,
+                          fontWeight: FontWeight.bold,
+                        ),
+                      ),
+                    ],
+                  ),
+                  // CROCKPOT
+                  Stack(
+                    alignment: Alignment.bottomCenter,
+                    children: <Widget>[
+                      CircleAvatar(
+                          backgroundImage: AssetImage('images/pot.jpg'),
+                          radius: 80
+                      ),
+                      Text(
+                        "Crockpot",
+                        style: TextStyle(
+                          fontSize: _stackCaptionFontSize,
+                          color: Colors.black,
+                        ),
+                      ),
+                    ],
+                  ),
+                ],
+              ),
+                Container(child: Text("BY DESSERT",
+                style: TextStyle(
+                  fontSize: _categoricalFontSize,
+                  fontWeight: FontWeight.bold,
+                  color: Colors.black,
+                ),
+                ),
+                ),
+                Row(
+                  mainAxisAlignment: MainAxisAlignment.spaceAround,
+                  children: <Widget>[
+                    // ICE CREAM
+                    Stack(
+                      alignment: Alignment.bottomCenter,
+                      children: <Widget>[
+                        CircleAvatar(
+                            backgroundImage: AssetImage('images/ice_cream.jpg'),
+                            radius: 80
+                        ),
+                        Align(alignment: Alignment.bottomCenter,
+                          child: Text(
+                            "Ice Cream",
+                            style: TextStyle(
+                              fontSize: _stackCaptionFontSize,
+                              color: Colors.black,
+                            ),
+                          ),
+                        ),
+                      ],
+                    ),
+                    // BROWNIES
+                    Stack(
+                      alignment: Alignment.bottomCenter,
+                      children: <Widget>[
+                        CircleAvatar(
+                            backgroundImage: AssetImage('images/brownies.jpg'),
+                            radius: 80
+                        ),
+                        Text(
+                          "Brownies",
+                          style: TextStyle(
+                            fontSize: _stackCaptionFontSize,
+                            color: Colors.black,
+                          ),
+                        ),
+                      ],
+                    ),
+                    // PIES
+                    Stack(
+                      alignment: Alignment.bottomCenter,
+                      children: <Widget>[
+                        CircleAvatar(
+                            backgroundImage: AssetImage('images/pies.jpg'),
+                            radius: 80
+                        ),
+                        Text(
+                          "Pies",
+                          style: TextStyle(
+                            fontSize: _stackCaptionFontSize,
+                            color: Colors.black,
+                          ),
+                        ),
+                      ],
+                    ),
+                    // COOKIES
+                    Stack(
+                      alignment: Alignment.bottomCenter,
+                      children: <Widget>[
+                        CircleAvatar(
+                            backgroundImage: AssetImage('images/cookies.jpg'),
+                            radius: 80
+                        ),
+                        Text(
+                          "Cookies",
+                          style: TextStyle(
+                            fontSize: _stackCaptionFontSize,
+                            color: Colors.black,
+                          ),
+                        ),
+                      ],
+                    ),
+                  ],
+                ),
+            ],
+          ),
       ),
-        bottomNavigationBar: BottomNavigationBar(items: const [
-          BottomNavigationBarItem( icon: Icon(Icons.camera), label: 'Camera' ),
-          BottomNavigationBarItem( icon: Icon(Icons.add_call), label: 'Phone'  ),
-        ],
-          onTap: (buttonIndex) {  } ,
-        )// This trailing comma makes auto-formatting nicer for build methods.
-    );
-
+    ) // This trailing comma makes auto-formatting nicer for build methods.
+        );
   }
 }
