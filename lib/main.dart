@@ -1,5 +1,8 @@
 import 'package:flutter/material.dart';
-import 'package:shared_preferences/shared_preferences.dart';
+import 'package:encrypted_shared_preferences/encrypted_shared_preferences.dart';
+
+import 'profile_page.dart';
+import 'repository.dart';
 
 void main() {
   runApp(const MyApp());
@@ -12,6 +15,10 @@ class MyApp extends StatelessWidget {
   Widget build(BuildContext context) {
     return MaterialApp(
       title: 'Flutter Demo',
+      initialRoute: "/",
+      routes: {
+        '/ProfilePage': (context) => const ProfilePage(title: '',),
+      },
       theme: ThemeData(
         colorScheme: ColorScheme.fromSeed(seedColor: Colors.deepPurple),
         useMaterial3: true,
@@ -27,6 +34,8 @@ class MyHomePage extends StatefulWidget {
 
   @override
   State<MyHomePage> createState() => _MyHomePageState();
+
+  void loadData() {}
 }
 
 class _MyHomePageState extends State<MyHomePage> {
@@ -39,70 +48,44 @@ class _MyHomePageState extends State<MyHomePage> {
     super.initState();
     _login = TextEditingController();
     _password = TextEditingController();
-    SharedPreferences.getInstance().then((result){
-      var login = result.getString('Login');
-      var password = result.getString('Password');
-      if (login != null && password != null) {
-        _login.text = login;
-        _password.text = password;
-        var snackBar = SnackBar(content: Text('Data autofilled!'),
+    _loadData();
+  }
+
+  Future<void> _loadData() async {
+    await Repository.loadData();
+    final result = EncryptedSharedPreferences();
+
+    setState(() {
+      _login.text = Repository.loginName;
+      _password.text = Repository.password;
+      if (_login.text.isNotEmpty || _password.text.isNotEmpty) {
+        var snackBar = SnackBar(content: const Text('Data auto filled!'),
           action: SnackBarAction(label: 'Undo', onPressed: clearText),);
         ScaffoldMessenger.of(context).showSnackBar(snackBar);
       }
     });
-  }
+      }
 
   void clearText() {
     _login.text = "";
     _password.text = "";
   }
 
+  Future<void> saveData() async {
+    await Repository.saveData();
+  }
+
+  void _toProfilePage() {
+    Navigator.pushNamed(context, "/ProfilePage");
+  }
+
   @override
-  void dispose() {
+  void dispose() async {
     _login.dispose();
     _password.dispose();
+    await Repository.loadData();
+    await Repository.saveData();
     super.dispose();
-  }
-
-  Future<void> saveData() async {
-    final prefs = await SharedPreferences.getInstance().then((result){
-      result.setString('Login', _login.text);
-      result.setString('Password', _password.text);
-    });
-
-  }
-
-  Future<void> _popUpBuilder(BuildContext context) {
-    return showDialog<void>(
-      context: context,
-      builder: (BuildContext context) {
-        return AlertDialog(
-          title: const Text('Save Data?'),
-          content: const Text('Save username and password for future logins?'),
-          actions: <Widget>[
-            TextButton(
-              style: TextButton.styleFrom(
-                textStyle: Theme.of(context).textTheme.labelLarge,
-              ),
-              child: const Text('No'),
-              onPressed: () {
-                Navigator.of(context).pop();
-              },
-            ),
-            TextButton(
-              style: TextButton.styleFrom(
-                textStyle: Theme.of(context).textTheme.labelLarge,
-              ),
-              child: const Text('Yes'),
-              onPressed: () async {
-                await saveData(); // Save data when "Yes" is pressed
-                Navigator.of(context).pop();
-              },
-            ),
-          ],
-        );
-      },
-    );
   }
 
   @override
@@ -135,7 +118,17 @@ class _MyHomePageState extends State<MyHomePage> {
             const SizedBox(height: 16),
             ElevatedButton(
               onPressed: () {
-                _popUpBuilder(context); // Show the dialog
+                setState(() {
+                  if (_password.text == 'QWERTY123') {
+                    imageSource = "images/idea.png";
+                    Repository.loginName = _login.text;
+                    Repository.password = _password.text;
+                    Repository.saveData();
+                   _toProfilePage();
+                  } else {
+                    imageSource = "images/stop.png";
+                  }
+                });
               },
               child: const Text("Login"),
             ),

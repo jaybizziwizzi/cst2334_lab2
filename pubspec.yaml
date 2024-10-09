@@ -36,6 +36,8 @@ dependencies:
   # Use with the CupertinoIcons class for iOS style icons.
   cupertino_icons: ^1.0.8
   shared_preferences: ^2.3.2
+  url_launcher: ^6.3.1
+  encrypted_shared_preferences: ^3.0.1
 
 dev_dependencies:
   flutter_test:
@@ -65,6 +67,8 @@ flutter:
   #   - images/a_dot_ham.jpeg
   assets:
     - images/question-mark.png
+    - images/idea.png
+    - images/stop.png
 
   # An image asset can refer to one or more resolution-specific "variants", see
   # https://flutter.dev/to/resolution-aware-images
